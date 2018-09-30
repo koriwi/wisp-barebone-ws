@@ -3,7 +3,7 @@ const http = require('http')
 
 const server = new http.createServer();
 const pingServer = new http.createServer();
-const port = process.env.PORT || 8080
+const port = parseInt(process.env.PORT || 8080)
 server.listen(port)
 pingServer.listen(port + 1)
 const wss = new WebSocket.Server({ server });
