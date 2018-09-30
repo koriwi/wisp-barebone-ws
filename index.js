@@ -3,27 +3,13 @@ const http = require('http')
 
 const server = new http.createServer();
 const pingServer = new http.createServer();
-const port = 8080
+const port = process.env.PORT || 8080
 server.listen(port)
 pingServer.listen(port + 1)
 const wss = new WebSocket.Server({ server });
-const pws = new WebSocket.Server({ server: pingServer })
 
 console.log('listening on port: ' + port);
 let clients = []
-
-pws.on('connection', (connection) => {
-	console.log('pinger connected')
-	connection.on('message', (message) => {
-		setTimeout(() => {
-			try {
-				connection.send(message)
-			} catch (e) {
-				connection.close()
-			}
-		}, Math.random() * 1)
-	})
-})
 
 wss.on('connection', (connection, newCLient) => {
 	console.log('new client')
