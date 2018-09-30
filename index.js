@@ -17,7 +17,7 @@ wss.on('connection', (connection, newCLient) => {
 
 	clients.push({ id: newCLient.headers['sec-websocket-key'], connection })
 	//tell everyone about the new guy
-	clients/*.filter(con => con != connection)*/.forEach(client => {
+	clients.filter(con => con.connection != connection).forEach(client => {
 		connection.send(JSON.stringify({
 			type: 'newClient',
 			payload: client.id
@@ -31,7 +31,7 @@ wss.on('connection', (connection, newCLient) => {
 
 	//broadcast
 	connection.on('message', (audio) => {
-		clients/*.filter(con => con != connection)*/.forEach(client => {
+		clients.filter(con => con.connection != connection).forEach(client => {
 			if (client.connection.readyState === WebSocket.OPEN)
 				client.connection.send(JSON.stringify({
 					type: 'audio',
